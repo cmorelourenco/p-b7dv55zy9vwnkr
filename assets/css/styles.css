@@ -1,0 +1,1839 @@
+/* ==========================================================================
+   C-MORE — responsive stylesheet
+   Breakpoints: mobile <768 · tablet 768–1023 · desktop >=1024
+   Type and rhythm are fluid: capped by BOTH width (vw) and height (vh) so the
+   page fits a short laptop window as well as a tall monitor.
+   ========================================================================== */
+
+/* ---------- Tokens ---------- */
+:root {
+  /* palette */
+  --navy: #141a32;
+  --navy-deep: #080d1c;
+  --green: #c0fa00;
+  --beige: #f2f1ed;
+  --ink: #3e4560;
+  --slate: #4e638b;
+  --mist: #909db6;
+  --fog: #b9c1d4;
+  --red: #dd2c2f;
+  --bar-track: #e9e7e2;
+  --hairline: #e2e6ee;
+  --blue-mid: #5c74a3;
+  --blue-soft: #9db0ce;
+  --white: #ffffff;
+
+  /* layout */
+  --gutter: clamp(20px, 4.5vw, 96px);
+  --maxw: 1248px;
+  --nav-h: clamp(56px, 6.4vw, 96px);
+  --nav-top: clamp(12px, 1.6vw, 20px);
+
+  /* fluid type — min, fluid (capped by width AND height), max */
+  --fs-display-xl: clamp(2.125rem, min(8.4vw, 9.6vh), 4.25rem); /* hero h1 */
+  --fs-display-l: clamp(2rem, min(5.9vw, 7.4vh), 5.25rem); /* section h2 */
+  --fs-display-m: clamp(1.875rem, min(5.1vw, 6.4vh), 4.5rem);
+  --fs-quote: clamp(1.5rem, min(3.6vw, 5.2vh), 3.75rem);
+  --fs-statement: clamp(1.375rem, min(3.4vw, 4.8vh), 3.5rem);
+  --fs-stat-xl: clamp(2rem, min(5vw, 5vh), 5.5rem); /* 60% 30% 2% */
+  --fs-stat-m: clamp(1.75rem, min(3vw, 4.4vh), 2.75rem); /* 100+ 20+  */
+  --fs-stat-s: clamp(1.5rem, min(2.6vw, 3.8vh), 2.375rem); /* 30+ 75%   */
+
+  --fs-lead: clamp(1rem, 1.1vw + 0.6rem, 1.5rem);
+  /* One body size for every section's paragraphs — vh-capped like the titles
+     so the title:body ratio stays constant in the pinned frames too. */
+  --fs-body: clamp(0.9375rem, min(1.3vw, 2.7vh), 1.3125rem);
+  --fs-sm: clamp(0.875rem, 0.2vw + 0.82rem, 0.9375rem);
+  --fs-mono: clamp(0.5rem, 0.2vw + 0.6rem, 0.9rem);
+  --fs-mono-sm: clamp(0.625rem, 0.2vw + 0.58rem, 0.8125rem);
+
+  /* vertical rhythm */
+  --section-y: clamp(56px, min(8vw, 11vh), 110px);
+  --stack-lg: clamp(24px, 3.5vw, 44px);
+  --stack-md: clamp(12px, min(2.4vw, 2.6vh), 32px);
+  --stack-sm: clamp(10px, 1.4vw, 16px);
+
+  /* scroll-driven progress values, written by app.js.
+     --problem-in defaults to 1 so section 2 is simply visible wherever the
+     desktop choreography is not running (mobile, tablet, reduced motion). */
+  --problem-in: 1;
+  --blur-q: 0;
+  --what-top: 100%;
+  --what-bottom: 0%;
+  --what-out: 0;
+  --creation-in: 1;
+  --creation-exit: 0px;
+  --dataset-close: 1;
+  --how-in: 1;
+  --card-pad: clamp(20px, 2.4vw, 28px);
+  --step-ease: cubic-bezier(0.32, 0.72, 0.24, 1);
+  --nav-bar-h: 70px;
+  /* The surface is anchored at top: var(--nav-top) and grows downward, so the
+     only height that leaves an equal gap below is the viewport less that inset
+     twice. A max cap cannot be used here — it would strand the bottom margin. */
+  --nav-open-h: calc(100svh - 2 * var(--nav-top));
+  --what-fade: 0;
+  --quote-in: 0;
+  --learn-in: 0;
+  --merge-cards: 0;
+  --merge-grow: 0;
+  --merge-fill: 0;
+  --merge-text: 0;
+  --merge-settle: 0;
+}
+
+/* ---------- Reset / base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* `clip` rather than `hidden`: hidden would turn the viewport into a scroll
+   container and break every position:sticky section below. */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--navy);
+  color: var(--navy);
+  font-family:
+    "Figtree",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* anchor links shouldn't land underneath the fixed nav */
+[id] {
+  scroll-margin-top: calc(var(--nav-h) + var(--nav-top) + 16px);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
+}
+
+.container {
+  width: min(var(--maxw), 100%);
+  margin-inline: auto;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Scroll-room spacers — only needed once sections are pinned (desktop). */
+.hero__spacer,
+.problem__gap {
+  display: none;
+}
+
+/* ---------- Shared bits ---------- */
+.eyebrow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: var(--stack-md);
+}
+.eyebrow--start {
+  align-items: flex-start;
+}
+
+.eyebrow__text {
+  font-family: "Kode Mono", ui-monospace, Menlo, monospace;
+  font-size: var(--fs-mono);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--slate);
+}
+.eyebrow--light .eyebrow__text {
+  color: var(--mist);
+}
+
+.dots {
+  display: flex;
+  gap: 8px;
+}
+.dots i {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  display: block;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-weight: 700;
+  text-align: center;
+  padding: clamp(12px, 1.6vw, 24px) clamp(22px, 3.2vw, 48px);
+  font-size: clamp(0.9375rem, 0.8vw + 0.65rem, 1.5rem);
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn--primary {
+  background: var(--green);
+  color: var(--navy);
+}
+.btn--ghost {
+  box-shadow: inset 0 0 0 3px var(--navy);
+  color: var(--navy);
+}
+.btn--ghost-light {
+  box-shadow: inset 0 0 0 3px var(--white);
+  color: var(--white);
+}
+.btn--sm {
+  padding: clamp(10px, 1.2vw, 20px) clamp(18px, 2.6vw, 40px);
+  font-size: clamp(0.875rem, 0.45vw + 0.75rem, 1.125rem);
+}
+
+.motif {
+  display: grid;
+  grid-template-columns: repeat(4, 18px);
+  grid-template-rows: 18px 18px;
+}
+.motif i {
+  display: block;
+}
+.motif .is-navy {
+  background: var(--navy);
+}
+.motif .is-green {
+  background: var(--green);
+}
+.motif .is-mist {
+  background: var(--mist);
+}
+
+/* ==========================================================================
+   Nav
+   ========================================================================== */
+.nav {
+  position: fixed;
+  top: var(--nav-top);
+  left: var(--gutter);
+  right: var(--gutter);
+  z-index: 200;
+  max-width: 1252px;
+  margin-inline: auto;
+  height: var(--nav-bar-h);
+  /* Exactly half the bar, not an arbitrary large pill value. It renders the
+     same when collapsed — the browser clamps any radius to half the box — but
+     it means the radius does not balloon as the clamp lifts during the expand.
+     Interpolating from 68px would render 35px, then ~52px, then 36px. */
+  border-radius: calc(var(--nav-bar-h) / 2);
+  background: var(--white);
+  box-shadow:
+    inset 0 0 0 1px rgba(20, 26, 50, 0.06),
+    0 12px 24px rgba(0, 0, 0, 0.08);
+  /* only the surface itself changes — the bar and the panel inside it are
+     sized independently, so nothing reflows while this runs */
+  transition:
+    height 0.45s var(--step-ease),
+    border-radius 0.45s var(--step-ease);
+  will-change: height;
+}
+.nav.is-try-open {
+  height: var(--nav-open-h);
+  border-radius: clamp(24px, 3vw, 36px);
+}
+
+.nav__bar {
+  height: var(--nav-bar-h);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: clamp(8px, 1vw, 14px);
+  padding-left: clamp(18px, 2.4vw, 32px);
+}
+
+.nav__logo {
+  width: clamp(78px, 8vw, 112px);
+  height: auto;
+}
+
+.nav__links {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: clamp(14px, 2.2vw, 32px);
+  font-size: clamp(0.8125rem, 1.04vw, 0.9375rem);
+  font-weight: 600;
+}
+.nav__links a {
+  white-space: nowrap;
+}
+.nav__links a:hover {
+  color: var(--slate);
+}
+.nav__cta--mobile {
+  display: none;
+}
+
+.nav__toggle {
+  display: none;
+  margin-left: auto;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+.nav__toggle span {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--navy);
+  transition: background 0.2s ease;
+}
+.nav__toggle span::before,
+.nav__toggle span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  background: var(--navy);
+  transition: transform 0.22s ease;
+}
+.nav__toggle span::before {
+  top: -6px;
+}
+.nav__toggle span::after {
+  top: 6px;
+}
+
+.nav__cta {
+  flex: none;
+}
+
+/* CTA becomes a close button once the panel is open */
+.nav__cta-close,
+.nav__cta-x {
+  display: none;
+}
+.nav__cta-x {
+  width: 20px;
+  height: 20px;
+}
+.nav__cta-x path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.nav.is-try-open .nav__cta-label {
+  display: none;
+}
+.nav.is-try-open .nav__cta-close {
+  display: inline; /* stays screen-reader only — it names the button */
+}
+.nav.is-try-open .nav__cta-x {
+  display: block;
+}
+.nav.is-try-open .nav__cta {
+  width: var(--nav-cta-x, 44px);
+  height: var(--nav-cta-x, 44px);
+  padding: 0;
+}
+
+/* the links step aside for the panel */
+.nav__links {
+  transition: opacity 0.22s ease;
+}
+.nav.is-try-open .nav__links {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Fixed height rather than `bottom: 0`, so the surface growing around it does
+   not reflow the panel's own contents mid-animation. */
+.try-panel {
+  position: absolute;
+  top: var(--nav-bar-h);
+  left: 0;
+  right: 0;
+  height: calc(var(--nav-open-h) - var(--nav-bar-h));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-sm);
+  padding: clamp(4px, 1vh, 16px) clamp(20px, 3vw, 44px) clamp(24px, 4vh, 44px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s;
+}
+.nav.is-try-open .try-panel {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.14s, 0s;
+}
+
+.try-panel__title {
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--navy);
+}
+.try-panel__lead {
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  color: var(--navy);
+  font-weight: 700;
+  max-width: min(760px, 100%);
+}
+.try-panel__text {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink);
+  max-width: min(760px, 100%);
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  background: rgba(8, 13, 28, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.scrim.is-on {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* held only while the panel is open, then removed */
+html.is-locked {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.hero {
+  position: relative;
+  /* own stacking context, so the z-index:-1 backdrop stays inside the hero
+     instead of sliding behind the page background */
+  isolation: isolate;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--nav-h) + var(--nav-top) + clamp(24px, 5vh, 72px))
+    var(--gutter) clamp(48px, 8vh, 96px);
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* White ground with the composition held to the right edge. `contain` (not
+     cover) is what makes `right` mean anything — cover would scale the art to
+     fill the width, leaving no slack to align within. */
+  background: var(--white) url("../images/ALMA-composicao.svg") right center /
+    contain no-repeat;
+  filter: blur(calc(var(--blur-q) * 12px))
+    brightness(calc(1 + var(--blur-q) * 0.28))
+    saturate(calc(1 - var(--blur-q) * 0.25));
+  transform: scale(calc(1 + var(--blur-q) * 0.04));
+  will-change: filter, transform;
+}
+
+/* Legibility scrim. Not needed on a white ground with the art held clear of
+   the copy — only where the image goes full-bleed behind the text (mobile). */
+.hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.hero__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-lg);
+  max-width: 720px;
+  opacity: calc(1 - var(--blur-q));
+}
+
+.hero__title {
+  font-size: var(--fs-display-xl);
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: var(--slate);
+  text-wrap: balance;
+}
+.hero__title em {
+  font-style: italic;
+  color: var(--navy);
+}
+.hero__title em.is-bold {
+  font-weight: 700;
+}
+
+/* emphasis inside a display heading — matches the hero's treatment */
+.em-strong {
+  font-style: italic;
+  font-weight: 700;
+}
+
+.hero__lead {
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--ink);
+  max-width: min(620px, 100%);
+}
+.hero__lead strong {
+  color: var(--navy);
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+/* ==========================================================================
+   The Problem
+   ========================================================================== */
+.problem {
+  position: relative;
+  z-index: 1;
+  background: var(--beige);
+  padding: var(--section-y) var(--gutter);
+}
+
+.problem__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.section-title {
+  font-size: var(--fs-display-l);
+  font-weight: 300;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--navy);
+  text-wrap: balance;
+  max-width: min(1100px, 100%);
+  margin-bottom: var(--stack-md);
+}
+
+.problem__copy {
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  color: var(--ink);
+  max-width: min(1040px, 100%);
+  margin-bottom: var(--stack-sm);
+}
+.problem__copy strong {
+  color: var(--navy);
+}
+.problem__copy:last-of-type {
+  margin-bottom: clamp(32px, 5vh, 72px);
+}
+
+/* --- bars --- */
+.bars {
+  width: 100%;
+}
+
+.bar {
+  display: grid;
+  grid-template-columns: minmax(140px, 320px) 1fr minmax(96px, 220px);
+  align-items: center;
+  gap: clamp(16px, 3vw, 40px);
+  padding: clamp(14px, 2.4vh, 28px) 0;
+  border-top: 1px solid var(--fog);
+  text-align: left;
+}
+.bar:last-child {
+  border-bottom: 1px solid var(--fog);
+}
+
+.bar__label {
+  font-family: "Kode Mono", ui-monospace, Menlo, monospace;
+  font-size: var(--fs-mono);
+  letter-spacing: 0.15em;
+  line-height: 1.4;
+  color: var(--navy);
+}
+
+.bar__track {
+  height: clamp(12px, 1.8vh, 22px);
+  background: var(--bar-track);
+  position: relative;
+}
+.bar__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: var(--navy);
+  transition: width 1.1s cubic-bezier(0.25, 0.6, 0.25, 1);
+}
+.bar--alert .bar__fill {
+  background: var(--red);
+}
+.bars.is-on .bar__fill {
+  width: var(--to);
+}
+.bars.is-on .bar:nth-child(2) .bar__fill {
+  transition-delay: 0.25s;
+}
+.bars.is-on .bar:nth-child(3) .bar__fill {
+  transition-delay: 0.5s;
+}
+
+.bar__value {
+  font-size: var(--fs-stat-xl);
+  font-weight: 800;
+  line-height: 0.85;
+  letter-spacing: -0.045em;
+  color: var(--navy);
+  text-align: right;
+}
+.bar--alert .bar__value {
+  color: var(--red);
+}
+
+/* ==========================================================================
+   What C-MORE is
+   ========================================================================== */
+.what {
+  position: relative;
+  z-index: 3;
+  background: var(--navy);
+  color: var(--white);
+  padding: var(--section-y) var(--gutter);
+  overflow: hidden;
+}
+
+.what__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: calc(1 - var(--what-fade));
+}
+
+.what .section-title {
+  color: var(--white);
+}
+
+.what__lead {
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  color: var(--fog);
+  max-width: min(1000px, 100%);
+  margin-bottom: clamp(28px, 5vh, 56px);
+}
+
+/* --- the diagram --- */
+.flow {
+  width: 100%;
+  display: grid;
+  grid-template-columns:
+    minmax(150px, 180px) 1fr minmax(180px, 230px)
+    1fr minmax(150px, 180px);
+  align-items: center;
+  column-gap: 8px;
+  text-align: left;
+}
+
+.flow__stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-md);
+}
+.flow__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.flow__stat b {
+  font-size: var(--fs-stat-m);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--white);
+}
+.flow__stat span {
+  font-family: "Kode Mono", ui-monospace, Menlo, monospace;
+  font-size: var(--fs-mono-sm);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1.7;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.flow__chaos,
+.flow__order {
+  position: relative;
+  height: clamp(180px, 30vh, 300px);
+  overflow: hidden;
+}
+.flow__chaos {
+  border-left: 3px dotted rgba(255, 255, 255, 0.55);
+}
+.flow__order {
+  border-right: 3px dotted rgba(255, 255, 255, 0.55);
+}
+
+.flow__chaos i {
+  position: absolute;
+  left: -30px;
+  display: block;
+}
+
+.flow__order .train {
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  display: flex;
+  gap: 33px;
+  animation: orderSlide 2.1s linear infinite;
+}
+.flow__order .train i {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.flow__core {
+  justify-self: center;
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  border: 1px solid var(--hairline);
+  height: clamp(180px, 30vh, 300px);
+  padding: 0 clamp(16px, 2.4vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flow__core img {
+  width: clamp(110px, 12vw, 166px);
+  height: auto;
+}
+
+.flow__caption {
+  font-family: "Kode Mono", ui-monospace, Menlo, monospace;
+  font-size: var(--fs-mono-sm);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1.8;
+  text-transform: uppercase;
+  color: var(--white);
+  text-align: right;
+}
+
+/* --- quote: in flow on small screens, a pinned overlay on desktop --- */
+.what__quote {
+  display: flex;
+  flex-direction: column;
+  margin-top: clamp(40px, 8vh, 80px);
+  gap: clamp(20px, 4vh, 44px);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 var(--gutter);
+}
+.what__quote p {
+  max-width: min(1100px, 100%);
+  font-size: var(--fs-display-l);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--green);
+}
+
+/* each line keeps its box while empty, so typing never shifts the block */
+.quote__line {
+  display: block;
+  min-height: 1.15em;
+}
+
+/* ==========================================================================
+   Category creation
+   ========================================================================== */
+.creation {
+  position: relative;
+  z-index: 2;
+  background: var(--beige);
+  padding: var(--section-y) var(--gutter);
+  overflow: hidden;
+}
+.creation-pin {
+  position: relative;
+}
+
+/* The green wipe only makes sense inside the pinned scene */
+.creation__wipe {
+  display: none;
+}
+
+/* lead-in line, set smaller than the statement it introduces */
+.title-kicker {
+  display: block;
+  font-size: 0.58em;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.creation__head {
+  text-align: center;
+}
+.creation__head .section-title {
+  max-width: min(900px, 100%);
+  margin-inline: auto;
+}
+
+.creation__lead {
+  margin: 0 auto clamp(20px, 4vh, 56px);
+  max-width: min(880px, 100%);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--ink);
+  text-align: center;
+}
+
+.risk-cards {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vw, 24px);
+  max-width: 1152px;
+  margin-inline: auto;
+}
+
+/* never let the flex column squash a band: its height must match its row
+   exactly, or translateY(100%) will not clear the band edge */
+.risk-row {
+  flex: none;
+}
+
+.risk-row__inner {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 24px);
+}
+
+.risk-card {
+  background: var(--navy);
+  color: var(--white);
+  padding: clamp(18px, 2.4vw, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: clamp(120px, 15vh, 172px);
+}
+.risk-card b {
+  font-size: clamp(1rem, 0.7vw + 0.75rem, 1.25rem);
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+.risk-card span {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--mist);
+}
+
+.creation__statement {
+  margin: clamp(40px, 8vh, 96px) auto 0;
+  max-width: min(1100px, 100%);
+  font-size: var(--fs-display-l);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--navy);
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* Kicker: smaller, and one line — it introduces the statement rather than
+   being part of it. Wrapping is allowed below the desktop breakpoint, where
+   nowrap would push it off the side of a phone. */
+.statement__kicker {
+  display: block;
+  font-size: 0.58em;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.statement__body {
+  display: block;
+  font-style: italic;
+  font-weight: 700;
+}
+
+/* typewriter: hidden sizer holds the box open, the visible copy is sliced */
+.type {
+  position: relative;
+  display: block;
+}
+.type__sizer {
+  visibility: hidden;
+}
+.type__out {
+  position: absolute;
+  inset: 0;
+}
+
+/* --- living dataset --- */
+.dataset {
+  width: min(560px, 100%);
+  margin: clamp(32px, 6vh, 64px) auto 0;
+  background: var(--navy-deep);
+  padding: clamp(18px, 2.4vw, 28px);
+}
+.dataset__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(192, 250, 0, 0.25);
+}
+.dataset__head span,
+.dataset__row span {
+  font-family: "Kode Mono", ui-monospace, Menlo, monospace;
+  font-size: var(--fs-mono-sm);
+  letter-spacing: 0.2em;
+  color: var(--white);
+}
+.dataset__live {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.dataset__live i {
+  width: 8px;
+  height: 8px;
+  display: block;
+  background: var(--green);
+  animation: feedGlow 1.6s ease-in-out infinite;
+}
+.dataset__live span {
+  color: var(--green);
+}
+
+.dataset__viewport {
+  height: clamp(140px, 22vh, 196px);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    transparent,
+    #000 12%,
+    #000 84%,
+    transparent
+  );
+  mask-image: linear-gradient(transparent, #000 12%, #000 84%, transparent);
+}
+.dataset__reel {
+  animation: datasetScroll 18s linear infinite;
+}
+.dataset__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(192, 250, 0, 0.12);
+}
+.dataset__row i {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  display: block;
+  background: var(--green);
+}
+.dataset__row span {
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* green divider band */
+.band {
+  background: var(--green);
+  height: clamp(48px, 18vh, 180px);
+  position: relative;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   How it works
+   ========================================================================== */
+.how {
+  position: relative;
+  z-index: 2;
+  background: var(--navy);
+  color: var(--white);
+  padding: var(--section-y) var(--gutter);
+}
+
+.how__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: start;
+}
+
+.how .eyebrow--start {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.how__title {
+  font-size: var(--fs-display-l);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--white);
+  margin-bottom: var(--stack-md);
+}
+
+.how__lead {
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--fog);
+  max-width: min(720px, 100%);
+  margin-bottom: clamp(28px, 5vh, 56px);
+}
+.how__lead strong {
+  color: var(--white);
+}
+
+.proof {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+.proof__card {
+  box-shadow: inset 0 0 0 1px rgba(192, 250, 0, 0.5);
+  padding: clamp(20px, 2.6vw, 32px) clamp(18px, 2.2vw, 26px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.proof__card b {
+  font-size: var(--fs-stat-s);
+  font-weight: 700;
+  line-height: 0.9;
+  color: var(--green);
+}
+.proof__card span {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--fog);
+}
+.proof__card strong {
+  color: var(--white);
+}
+
+.rail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  padding: 24px 0;
+}
+.rail::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  margin-left: -1.5px;
+  background: var(--green);
+}
+/* Base (and every unpinned breakpoint): four plain cards, all open. The
+   collapsing-square behaviour is layered on in the desktop block only. */
+.rail {
+  list-style: none;
+  margin: 0;
+}
+.step {
+  position: relative;
+  width: 100%;
+  background: var(--white);
+  color: var(--navy);
+  box-shadow: inset 0 0 0 3px var(--green);
+  padding: var(--card-pad);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+}
+.step__no {
+  font-family: "Kode Mono", ui-monospace, Menlo, monospace;
+  font-size: var(--fs-mono-sm);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--slate);
+}
+.step__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.step__title {
+  display: block;
+  font-size: clamp(1rem, 0.7vw + 0.75rem, 1.25rem);
+  font-weight: 700;
+}
+.step__text {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+@keyframes chaosA {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    transform: translateX(440px) rotate(135deg);
+  }
+}
+@keyframes chaosB {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    transform: translateX(440px) rotate(-110deg);
+  }
+}
+@keyframes orderSlide {
+  0% {
+    transform: translateX(-196px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes feedGlow {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+@keyframes datasetScroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+/* reveal on scroll (used on touch / reduced-motion / mobile) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ==========================================================================
+   Tablet
+   ========================================================================== */
+@media (max-width: 1023px) {
+  .how__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rail {
+    max-width: 520px;
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .flow {
+    grid-template-columns: 1fr 1fr;
+    row-gap: var(--stack-md);
+    justify-items: center;
+    text-align: center;
+  }
+  .flow__stats {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: center;
+    gap: clamp(24px, 6vw, 64px);
+    width: 100%;
+  }
+  .flow__stat {
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    max-width: 260px;
+  }
+  .flow__chaos,
+  .flow__order {
+    display: none;
+  }
+  .flow__core {
+    grid-column: 1 / -1;
+    width: min(320px, 100%);
+  }
+  .flow__caption {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+}
+
+/* ==========================================================================
+   Mobile
+   ========================================================================== */
+@media (max-width: 767px) {
+  .nav {
+    gap: 0;
+  }
+  .nav__toggle {
+    display: flex;
+  }
+  .nav__cta {
+    display: none;
+  }
+
+  .nav__links {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.16);
+    padding: 8px;
+    font-size: 1rem;
+    /* collapsed */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0.2s;
+  }
+  .nav__links a {
+    padding: 14px 20px;
+    border-radius: 16px;
+  }
+  .nav__links a:hover {
+    background: var(--beige);
+  }
+  .nav__links .nav__cta--mobile {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    background: var(--green);
+    text-align: center;
+    font-weight: 700;
+  }
+
+  /* The desktop CTA is hidden here, so bring it back purely as the close X —
+     otherwise the panel would have no close control on a phone. */
+  .nav.is-try-open .nav__toggle {
+    display: none;
+  }
+  .nav.is-try-open .nav__cta {
+    display: inline-flex;
+    margin-left: auto;
+  }
+
+  .nav.is-open .nav__links {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .nav.is-open .nav__toggle span {
+    background: transparent;
+  }
+  .nav.is-open .nav__toggle span::before {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .nav.is-open .nav__toggle span::after {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .hero {
+    min-height: 88svh;
+  }
+  .hero__bg {
+    background-size: cover;
+    background-position: 72% center;
+  }
+  .hero__bg::after {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.78) 55%,
+      rgba(255, 255, 255, 0.5) 100%
+    );
+  }
+  .statement__kicker {
+    white-space: normal;
+  }
+
+  .hero__lead {
+    max-width: none;
+  }
+  .hero__ctas .btn {
+    flex: 1 1 100%;
+  }
+
+  .section-title,
+  .creation__head .section-title {
+    max-width: none;
+  }
+
+  /* bars stack: label over track, value beside */
+  .bar {
+    grid-template-columns: 1fr auto;
+    gap: 10px 16px;
+  }
+  .bar__label {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: end;
+  }
+  .bar__value {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+  .bar__track {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .flow__stats {
+    flex-direction: column;
+    align-items: center;
+  }
+  .flow__stat {
+    max-width: none;
+  }
+
+  .risk-row__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dataset__row span {
+    white-space: normal;
+  }
+
+  .rail {
+    gap: 16px;
+  }
+}
+
+/* ==========================================================================
+   Desktop scroll choreography
+   Only pin sections when there is genuinely room for them.
+   ========================================================================== */
+@media (min-width: 1024px) and (min-height: 620px) and (pointer: fine) {
+  /* z-index 0, not -1: at -1 the empty .hero__spacer (in flow, z-index auto)
+     sits above the fixed hero and eats every click on its CTAs. 0 still puts
+     it under every section below, all of which are positioned at 1 or more. */
+  .hero {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    min-height: 0;
+  }
+  .hero__spacer {
+    display: block;
+    height: 100vh;
+  }
+
+  /* Held still for the whole of its scroll, transparent so the blurred hero
+     reads through. It does not slide into frame — the elements inside fade in
+     where they already sit, driven by --problem-in. */
+  .problem {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    height: 100vh;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    padding-block: calc(var(--nav-h) + var(--nav-top)) clamp(16px, 1.5vh, 24px);
+    pointer-events: none;
+  }
+  .problem.is-live {
+    pointer-events: auto;
+  }
+  .problem__inner {
+    width: min(var(--maxw), 100%);
+  }
+
+  /* staggered fade, opacity only — nothing moves */
+  .problem .problem__inner > * {
+    opacity: clamp(0, calc((var(--problem-in) - var(--d, 0)) * 3), 1);
+  }
+  .problem .problem__inner > :nth-child(2) {
+    --d: 0.08;
+  }
+  .problem .problem__inner > :nth-child(3) {
+    --d: 0.16;
+  }
+  .problem .problem__inner > :nth-child(4) {
+    --d: 0.22;
+  }
+  .problem .problem__inner > :nth-child(5) {
+    --d: 0.28;
+  }
+
+  /* the hero is invisible by now — stop it swallowing clicks */
+  .hero.is-faded {
+    pointer-events: none;
+  }
+  .problem .bar {
+    padding-block: clamp(8px, 2vh, 28px);
+  }
+  .problem__copy:last-of-type {
+    margin-bottom: clamp(20px, 4vh, 72px);
+  }
+
+  /* absorbs the scroll length the now-fixed .problem no longer occupies
+     (its own 100vh) plus the original 45vh breather before "What C-MORE is" */
+  .problem__gap {
+    display: block;
+    height: 145vh;
+  }
+
+  .what-pin {
+    height: 280vh;
+    position: relative;
+    z-index: 3;
+  }
+  /* Nothing in this section ever moves. The panel is pinned to the viewport
+     and the navy band is drawn by a clip whose edges track where the panel's
+     top and bottom would have been. Sliding the panel while counter-moving the
+     content could never stay in step — the slide runs on the compositor and the
+     compensation is computed in JS a frame behind it. */
+  .what {
+    position: fixed;
+    inset: 0;
+    padding-block: calc(var(--nav-h) + var(--nav-top) + 2vh)
+      clamp(16px, 3vh, 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: visible;
+    clip-path: inset(var(--what-top, 100%) 0 var(--what-bottom, 0%) 0);
+  }
+  .what__inner {
+    justify-content: center;
+  }
+  .what__lead {
+    margin-bottom: clamp(20px, 4vh, 56px);
+  }
+  /* Fades in with --quote-in, then back out with --what-out as the next
+     section arrives. The panel no longer moves, so it simply fades in place. */
+  .what__quote {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    opacity: calc(var(--quote-in) * (1 - var(--what-out)));
+    pointer-events: none;
+  }
+  .what__quote.is-gone .btn {
+    pointer-events: none;
+  }
+  .what__quote .btn {
+    opacity: var(--learn-in);
+    pointer-events: auto;
+  }
+
+  /* 300vh of sequence plus the tail app.js holds at the end (TAIL), so the
+     buffer is added scroll rather than a faster animation */
+  .creation-pin {
+    height: 360vh;
+    position: relative;
+    z-index: 2;
+    background: var(--beige);
+  }
+  .creation {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    /* same nav clearance as the other pinned frames, so the eyebrow never
+       comes to rest underneath the fixed nav */
+    /* same nav clearance as the other pinned frames, so the eyebrow never
+       comes to rest underneath the fixed nav */
+    padding-block: calc(var(--nav-h) + var(--nav-top) + 2vh)
+      clamp(16px, 3vh, 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* the group is held still while the panel leaves, so it must not be
+       clipped by the panel's own box on the way out */
+    overflow: visible;
+  }
+
+  /* Entrance: the beige panel is fully in place before any of this starts,
+     then the elements fade up in sequence without moving. */
+  .creation .creation__head > *,
+  .creation .risk-cards {
+    opacity: clamp(0, calc((var(--creation-in) - var(--d, 0)) * 1.8), 1);
+  }
+  .creation .creation__head > :nth-child(2) {
+    --d: 0.08;
+  }
+  .creation .creation__head > :nth-child(3) {
+    --d: 0.16;
+  }
+  .creation .risk-cards {
+    --d: 0.24;
+  }
+
+  /* the cards carry .reveal for the unpinned breakpoints; on desktop the
+     block above owns their entrance, so neutralise the per-card slide */
+  .creation .risk-card.reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* "How it works" enters exactly the way Creation does: pinned, so the navy
+     panel slides up and locks first, and only then do the elements fade up —
+     stationary, because the panel they sit in is no longer moving. */
+  /* entrance + four step beats + a hold before the section releases */
+  .how-pin {
+    height: 400vh;
+    position: relative;
+    z-index: 2;
+    background: var(--navy);
+  }
+  .how {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-block: calc(var(--nav-h) + var(--nav-top) + 2vh)
+      clamp(16px, 3vh, 40px);
+  }
+  /* Fill the frame and stretch the columns, so the rail — and therefore its
+     line — runs the full height rather than only as tall as its own steps. */
+  .how__inner {
+    width: min(var(--maxw), 100%);
+    height: 100%;
+    align-items: stretch;
+  }
+  .how__main {
+    align-self: center;
+  }
+  /* Every step is taken out of flow and placed by transform, so opening one
+     never reflows the others — the whole stack is driven by --y, which app.js
+     recomputes when the active step changes. Nothing here animates a property
+     that affects a sibling. */
+  .rail {
+    height: 100%;
+    display: block;
+    padding: 0;
+  }
+
+  /* The number stays in normal flow above the body, and the whole group is
+     centred in the step — so collapsed, the number is centred in the square,
+     and open, it is centred as one block with its own title and text. */
+  .step {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    gap: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: var(--green);
+    /* the ring is present in both states — green on green while collapsed —
+       so only background-color has to transition, never box-shadow */
+    box-shadow: inset 0 0 0 3px var(--green);
+    transform: translate(-50%, var(--y, 0px));
+    transition:
+      transform 0.5s var(--step-ease),
+      width 0.5s var(--step-ease),
+      height 0.5s var(--step-ease),
+      padding 0.5s var(--step-ease),
+      background-color 0.35s ease;
+    will-change: transform, width, height;
+  }
+  .step.is-open {
+    width: 100%;
+    height: var(--card-h, 240px);
+    padding: var(--card-pad);
+    gap: 12px;
+    align-items: stretch;
+    background: var(--white);
+  }
+
+  .step__no {
+    color: var(--navy);
+    transition: color 0.35s ease;
+  }
+  .step.is-open .step__no {
+    color: var(--slate);
+  }
+
+  /* Collapses to nothing so it takes no part in the centring while closed.
+     --body-h is that step's own measured height, set by app.js. */
+  .step__body {
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      height 0.5s var(--step-ease),
+      opacity 0.28s ease;
+  }
+  .step.is-open .step__body {
+    height: var(--body-h, auto);
+    opacity: 1;
+  }
+  .step.is-open .step__body {
+    transition-delay: 0s, 0.18s;
+  }
+
+  /* Held across the whole measure-and-place pass so restoring the real values
+     never starts a transition. */
+  .rail.no-anim .step,
+  .rail.no-anim .step * {
+    transition: none !important;
+  }
+
+  /* Transient state used once per layout to read each card's natural height. */
+  .rail.is-measuring .step {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: var(--card-pad);
+    gap: 12px;
+    align-items: stretch;
+    transform: none;
+    transition: none !important;
+  }
+  .rail.is-measuring .step__body {
+    height: auto;
+    opacity: 1;
+  }
+
+  .how__main > *,
+  .how .rail {
+    opacity: clamp(0, calc((var(--how-in) - var(--d, 0)) * 1.8), 1);
+  }
+  .how__main > :nth-child(2) {
+    --d: 0.08;
+  }
+  .how__main > :nth-child(3) {
+    --d: 0.16;
+  }
+  .how__main > :nth-child(4) {
+    --d: 0.24;
+  }
+  .how .rail {
+    --d: 0.3;
+  }
+
+  /* the cards keep .reveal for the unpinned breakpoints; here the block above
+     owns the entrance, so neutralise the per-card slide */
+  .how .proof__card.reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* The band is the same lime as the held backdrop, so passing over the title
+     it reads as an invisible edge cropping the text rather than a cover. Drop
+     it below the pinned section and let the navy "How it works" do the
+     covering — that edge is actually visible. */
+  .band {
+    z-index: 1;
+  }
+
+  .creation__scene {
+    position: relative;
+  }
+  /* Each band clips its own row. Translating by 100% of the row's own height
+     drives it fully past the band edge that faces the line, so the portion
+     crossing the line is masked away instead of overlapping the other row. */
+  .risk-row {
+    overflow: hidden;
+  }
+  .risk-row--top .risk-row__inner {
+    transform: translateY(calc(var(--merge-cards) * 100%));
+  }
+  .risk-row--bottom .risk-row__inner {
+    transform: translateY(calc(var(--merge-cards) * -100%));
+  }
+
+  /* Starts centred on the gap between the two card rows (--wipe-offset, measured
+     by app.js), then travels to the centre of the frame as it fills the screen.
+     Width grows symmetrically left and right from that point. */
+  .creation__wipe {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: calc(50% + (1 - var(--merge-fill)) * var(--wipe-offset, 0px));
+    /* held on the exit alongside the title it sits behind — the title is navy,
+       so without its lime backdrop it would vanish against the next section
+       rather than being covered by it */
+    transform: translate(-50%, calc(-50% + var(--creation-exit)));
+    width: calc(var(--merge-grow) * 100vw);
+    height: calc(12px + var(--merge-fill) * (100vh - 12px));
+    background: var(--green);
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  /* One centred column. `top` clears the fixed nav so the group centres in the
+     space actually available, not in the raw viewport. */
+  .creation__final {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(var(--nav-h) + var(--nav-top));
+    bottom: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--merge-settle) * clamp(24px, 5vh, 56px));
+    padding: 0 48px;
+    pointer-events: none;
+    /* cancels the panel's departure, so the title holds its position on screen
+       until the next section rises over it */
+    transform: translateY(var(--creation-exit));
+  }
+
+  .creation__statement {
+    margin: 0;
+    max-width: min(1100px, 100%);
+    opacity: var(--merge-text);
+  }
+
+  /* Collapses to zero height until the dataset is called for, so the group
+     re-centres as it opens instead of the statement jumping to a fixed offset.
+     --dataset-h is the dataset's natural height, measured in app.js. */
+  /* Centring the dataset inside a clipped slot means the slot's height drives
+     an open/close from the middle outwards — the box grows from its centre on
+     the way in and shrinks back to it on the way out, without squashing the
+     text the way a scaleY would. */
+  .dataset-slot {
+    flex: none;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(var(--merge-settle) * var(--dataset-h, 0px));
+  }
+  /* The exit close is a clip, not a layout change: the slot keeps its height
+     so the title above it does not drift while the box shuts. inset() from top
+     and bottom equally means it closes onto its own centre line. */
+  .dataset {
+    flex: none;
+    clip-path: inset(calc((1 - var(--dataset-close)) * 50%) 0);
+  }
+
+  .dataset {
+    margin: 0;
+    opacity: var(--merge-settle);
+  }
+}
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

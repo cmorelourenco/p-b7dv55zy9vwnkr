@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>C-MORE — Risk intelligence infrastructure</title>
+    <meta
+      name="description"
+      content="C-MORE is an AI-powered risk intelligence platform that turns ESG exposure, operational dependencies and supply chain vulnerabilities into a continuously updated risk map."
+    />
+    <meta name="theme-color" content="#141A32" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900&amp;family=Kode+Mono:wght@400;500;600;700&amp;display=swap"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <!-- The nav surface doubles as the trial panel: pressing the CTA grows the
+         pill downward, fades the links out and turns the CTA into a close X.
+         The panel is absolutely positioned so the height change never reflows
+         it. -->
+    <header class="nav" id="nav">
+      <div class="nav__bar">
+        <a href="#top" aria-label="C-MORE home">
+          <img
+            class="nav__logo"
+            src="assets/images/fig-logo.png"
+            alt="c·more"
+            width="112"
+            height="30"
+          />
+        </a>
+
+        <button
+          class="nav__toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-links"
+        >
+          <span></span>
+          <span class="sr-only">Menu</span>
+        </button>
+
+        <nav class="nav__links" id="nav-links">
+          <a href="#problem">The Problem</a>
+          <a href="#what">What C-MORE Is</a>
+          <a href="#creation">Creation</a>
+          <a href="#how">How It Works</a>
+          <a href="#proof">Proof</a>
+          <a href="#contact">Contact</a>
+          <button class="nav__cta--mobile" type="button" data-try-open>
+            Try for free
+          </button>
+        </nav>
+
+        <button
+          class="btn btn--primary btn--sm nav__cta"
+          type="button"
+          id="try-toggle"
+          aria-expanded="false"
+          aria-controls="try-panel"
+        >
+          <span class="nav__cta-label">Try for free</span>
+          <svg
+            class="nav__cta-x"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+          <span class="nav__cta-close sr-only">Close</span>
+        </button>
+      </div>
+
+      <div class="try-panel" id="try-panel">
+        <h2 class="try-panel__title">Try C-MORE free</h2>
+        <p class="try-panel__lead">
+          See C-MORE mapped against your own supplier data — no credit card
+          required.
+        </p>
+        <p class="try-panel__text">
+          Placeholder panel content. This is where the trial sign-up form would
+          live — swap it in when the fields are decided.
+        </p>
+      </div>
+    </header>
+
+    <div class="scrim" data-try-close></div>
+
+    <main id="top">
+      <!-- ===================== Hero ===================== -->
+      <section class="hero">
+        <div class="hero__bg" aria-hidden="true"></div>
+
+        <div class="hero__inner">
+          <div class="motif" aria-hidden="true">
+            <i class="is-navy"></i><i></i><i class="is-green"></i><i></i> <i></i
+            ><i class="is-mist"></i><i></i><i class="is-navy"></i>
+          </div>
+
+          <h1 class="hero__title">
+            The risk you <em>can’t see</em><br />
+            is the risk that <em class="is-bold">breaks you</em>
+          </h1>
+
+          <p class="hero__lead">
+            Most organizations only discover critical risks too late.
+            <strong
+              >C-MORE helps you identify them early, before they impact your
+              capital, financing, or valuation.</strong
+            >
+          </p>
+
+          <div class="hero__ctas">
+            <button class="btn btn--primary" type="button" data-try-open>
+              Try for free
+            </button>
+            <a class="btn btn--ghost" href="#how">View plans</a>
+          </div>
+        </div>
+      </section>
+      <div class="hero__spacer" aria-hidden="true"></div>
+
+      <!-- ===================== The problem ===================== -->
+      <section class="problem" id="problem">
+        <div class="container problem__inner">
+          <div class="eyebrow">
+            <span class="eyebrow__text">THE PROBLEM</span>
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </div>
+
+          <h2 class="section-title">
+            Your biggest risks aren’t in your financial statements.
+            <em class="em-strong">Yet.</em>
+          </h2>
+
+          <p class="problem__copy">
+            Risk is now systemic, moving across supply chains, geographies and
+            regulatory regimes. Non-financial risk is now
+            <strong>auditable, enforceable</strong> and
+            <strong>penalised</strong>, while financial institutions
+            increasingly assess the wider ecosystem behind every company.
+          </p>
+          <p class="problem__copy">
+            <strong
+              >Yet visibility has not kept pace, creating blind spots where
+              interconnected risk can emerge and spread.</strong
+            >
+          </p>
+
+          <div class="bars" id="bars">
+            <div class="bar">
+              <span class="bar__label">VISIBILITY INTO TIER 1</span>
+              <span class="bar__track"
+                ><span class="bar__fill" style="--to: 60%"></span
+              ></span>
+              <span class="bar__value">60%</span>
+            </div>
+            <div class="bar">
+              <span class="bar__label">VISIBILITY INTO TIER 2</span>
+              <span class="bar__track"
+                ><span class="bar__fill" style="--to: 30%"></span
+              ></span>
+              <span class="bar__value">30%</span>
+            </div>
+            <div class="bar bar--alert">
+              <span class="bar__label"
+                >VISIBILITY INTO<br />TIER 3 &amp; BEYOND</span
+              >
+              <span class="bar__track"
+                ><span class="bar__fill" style="--to: 2%"></span
+              ></span>
+              <span class="bar__value">2%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="problem__gap" aria-hidden="true"></div>
+
+      <!-- ===================== What C-MORE is ===================== -->
+      <div class="what-pin">
+        <section class="what" id="what">
+          <div class="container what__inner">
+            <div class="eyebrow eyebrow--light">
+              <span class="eyebrow__text">WHAT C-MORE IS</span>
+              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+
+            <h2 class="section-title">
+              The intelligence layer for non-financial risk
+            </h2>
+
+            <p class="what__lead">
+              C-MORE is an AI-powered risk intelligence platform. We aggregate
+              data across your company and its ecosystem, turning ESG exposure,
+              operational dependencies and supply chain vulnerabilities into a
+              continuously updated risk map.
+            </p>
+
+            <div class="flow">
+              <div class="flow__stats">
+                <div class="flow__stat">
+                  <b>100+</b>
+                  <span>Structured and unstructured data sources</span>
+                </div>
+                <div class="flow__stat">
+                  <b>20+</b>
+                  <span>Risk areas, from climate to governance</span>
+                </div>
+              </div>
+
+              <div class="flow__chaos" aria-hidden="true">
+                <i
+                  style="
+                    top: 22px;
+                    width: 22px;
+                    height: 22px;
+                    background: #c0fa00;
+                    animation: chaosA 5.2s linear infinite -1.1s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 74px;
+                    width: 13px;
+                    height: 13px;
+                    background: #5c74a3;
+                    animation: chaosB 4.1s linear infinite -3s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 48px;
+                    width: 17px;
+                    height: 17px;
+                    background: #9db0ce;
+                    animation: chaosA 6s linear infinite -4.4s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 118px;
+                    width: 26px;
+                    height: 26px;
+                    background: #5c74a3;
+                    animation: chaosB 5.6s linear infinite -0.4s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 96px;
+                    width: 11px;
+                    height: 11px;
+                    background: #c0fa00;
+                    animation: chaosA 3.8s linear infinite -2.2s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 152px;
+                    width: 15px;
+                    height: 15px;
+                    background: #9db0ce;
+                    animation: chaosB 4.7s linear infinite -3.7s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 178px;
+                    width: 20px;
+                    height: 20px;
+                    background: #c0fa00;
+                    animation: chaosA 5.9s linear infinite -5.1s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 206px;
+                    width: 12px;
+                    height: 12px;
+                    background: #5c74a3;
+                    animation: chaosB 4.3s linear infinite -1.8s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 238px;
+                    width: 24px;
+                    height: 24px;
+                    background: #5c74a3;
+                    animation: chaosA 6.4s linear infinite -2.9s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 262px;
+                    width: 14px;
+                    height: 14px;
+                    background: #c0fa00;
+                    animation: chaosB 5s linear infinite -4s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 8px;
+                    width: 16px;
+                    height: 16px;
+                    background: #9db0ce;
+                    animation: chaosB 4.9s linear infinite -0.9s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 136px;
+                    width: 10px;
+                    height: 10px;
+                    background: #c0fa00;
+                    animation: chaosA 4.5s linear infinite -3.3s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 58px;
+                    width: 19px;
+                    height: 19px;
+                    background: #5c74a3;
+                    animation: chaosB 5.4s linear infinite -2.5s;
+                  "
+                ></i>
+                <i
+                  style="
+                    top: 222px;
+                    width: 18px;
+                    height: 18px;
+                    background: #9db0ce;
+                    animation: chaosA 4s linear infinite -1.4s;
+                  "
+                ></i>
+              </div>
+
+              <div class="flow__core">
+                <img
+                  src="assets/images/fig-logo-negative.png"
+                  alt="c·more"
+                  width="166"
+                  height="45"
+                />
+              </div>
+
+              <div class="flow__order" aria-hidden="true">
+                <div class="train">
+                  <i style="background: #c0fa00"></i
+                  ><i style="background: #5c74a3"></i>
+                  <i style="background: #9db0ce"></i
+                  ><i style="background: #5c74a3"></i>
+                  <i style="background: #c0fa00"></i
+                  ><i style="background: #5c74a3"></i>
+                  <i style="background: #9db0ce"></i
+                  ><i style="background: #5c74a3"></i>
+                  <i style="background: #c0fa00"></i
+                  ><i style="background: #5c74a3"></i>
+                  <i style="background: #9db0ce"></i
+                  ><i style="background: #5c74a3"></i>
+                </div>
+              </div>
+
+              <p class="flow__caption">
+                continuously<br />updated<br />risk map
+              </p>
+            </div>
+          </div>
+
+          <div class="what__quote">
+            <!-- One element per line: the typewriter fills them in sequence,
+                 which lets the second line carry its own emphasis (a single
+                 sliced string could not hold markup). -->
+            <p data-quote>
+              <span class="quote__line">If you can’t quantify your risk,</span>
+              <span class="quote__line em-strong"
+                >you can’t defend your business.</span
+              >
+            </p>
+            <button class="btn btn--ghost-light" type="button" data-try-open>
+              Try now
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================== Category creation ===================== -->
+      <div class="creation-pin">
+        <section class="creation" id="creation">
+          <div class="container">
+            <div class="creation__head">
+              <div class="eyebrow">
+                <span class="eyebrow__text">CATEGORY CREATION</span>
+                <span class="dots" aria-hidden="true"
+                  ><i></i><i></i><i></i
+                ></span>
+              </div>
+              <h2 class="section-title">
+                <span class="title-kicker">A new category:</span>Risk
+                Intelligence Infrastructure
+              </h2>
+              <p class="creation__lead">
+                This is not a reporting tool. It is a monitoring and
+                intelligence infrastructure, one that learns as your business
+                and its ecosystem change.
+              </p>
+            </div>
+
+            <!-- Two clipping bands with the lime line running through the gap
+                 between them. Each row slides into that gap and is masked by
+                 its band's edge, rather than crossing the line. -->
+            <div class="risk-cards">
+              <div class="risk-row risk-row--top">
+                <div class="risk-row__inner">
+                  <article class="risk-card reveal">
+                    <b>Supply chain dependencies</b>
+                    <span
+                      >Disruption, concentration risk and Tier-2 vulnerabilities
+                      that don’t appear in your own accounts.</span
+                    >
+                  </article>
+                  <article class="risk-card reveal">
+                    <b>Climate &amp; ESG factors</b>
+                    <span
+                      >Transition risk, physical climate exposure and ESG data
+                      gaps that affect financing and credit ratings.</span
+                    >
+                  </article>
+                </div>
+              </div>
+
+              <div class="risk-row risk-row--bottom">
+                <div class="risk-row__inner">
+                  <article class="risk-card reveal">
+                    <b>Regulatory misalignment</b>
+                    <span
+                      >CSRD, ISSB and EU Taxonomy exposure that becomes
+                      auditable, enforceable and penalised.</span
+                    >
+                  </article>
+                  <article class="risk-card reveal">
+                    <b>Operational dependencies</b>
+                    <span
+                      >Single points of failure in your ecosystem that aren’t
+                      visible until they break.</span
+                    >
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Statement and dataset are one group so the pair centres itself,
+               rather than each being placed with its own vh offset. The slot
+               collapses to nothing until the dataset is called for, so the
+               statement is centred on its own first. -->
+          <div class="creation__final">
+            <!-- The sizer reserves the full two-line box so the typewriter does
+                 not reflow and re-centre the block as each line lands. -->
+            <!-- Two parts so each can be styled: the kicker is smaller and
+                 held to one line, the statement itself is bold italic. The
+                 typewriter fills them in sequence. The sizer is a hidden copy
+                 that holds the box open so typing cannot reflow it. -->
+            <p class="creation__statement">
+              <span class="type">
+                <span class="type__sizer" aria-hidden="true">
+                  <span class="statement__kicker"
+                    >C-MORE brings these into a single layer:</span
+                  >
+                  <span class="statement__body"
+                    >a living dataset of company risk, continuously enriched and
+                    analysed by AI.</span
+                  >
+                </span>
+                <span class="type__out">
+                  <span class="statement__kicker" data-statement-line
+                    >C-MORE brings these into a single layer:</span
+                  >
+                  <span class="statement__body" data-statement-line
+                    >a living dataset of company risk, continuously enriched and
+                    analysed by AI.</span
+                  >
+                </span>
+              </span>
+            </p>
+
+            <div class="dataset-slot">
+              <div class="dataset">
+            <div class="dataset__head">
+              <span>LIVING DATASET</span>
+              <span class="dataset__live"
+                ><i aria-hidden="true"></i><span>LIVE</span></span
+              >
+            </div>
+            <div class="dataset__viewport">
+              <div class="dataset__reel" data-reel>
+                <div class="dataset__row">
+                  <i aria-hidden="true"></i
+                  ><span>supplier network — tier-2 exposure remapped</span>
+                </div>
+                <div class="dataset__row">
+                  <i aria-hidden="true"></i
+                  ><span>CSRD / ESRS E1 — disclosure gap rescored</span>
+                </div>
+                <div class="dataset__row">
+                  <i aria-hidden="true"></i
+                  ><span>physical climate — flood exposure updated</span>
+                </div>
+                <div class="dataset__row">
+                  <i aria-hidden="true"></i
+                  ><span>governance — board oversight signal added</span>
+                </div>
+                <div class="dataset__row">
+                  <i aria-hidden="true"></i
+                  ><span>EU Taxonomy — alignment re-assessed</span>
+                </div>
+                <div class="dataset__row">
+                  <i aria-hidden="true"></i
+                  ><span>labour practices — supplier audit ingested</span>
+                </div>
+                <div class="dataset__row">
+                  <i aria-hidden="true"></i
+                  ><span>transition risk — carbon price scenario run</span>
+                </div>
+                <div class="dataset__row">
+                  <i aria-hidden="true"></i
+                  ><span>concentration risk — single-source flag raised</span>
+                </div>
+              </div>
+            </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="creation__wipe" aria-hidden="true"></div>
+        </section>
+      </div>
+
+      <div class="band" aria-hidden="true"></div>
+
+      <!-- ===================== How it works ===================== -->
+      <div class="how-pin">
+        <section class="how" id="how">
+          <div class="container how__inner">
+          <div class="how__main">
+            <div class="eyebrow eyebrow--light eyebrow--start">
+              <span class="eyebrow__text">HOW IT WORKS</span>
+              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+
+            <h2 class="how__title">From Signals to<br />Risk Intelligence</h2>
+
+            <p class="how__lead">
+              <strong
+                >Each step turns fragmented signals into decision-ready
+                intelligence</strong
+              >, building toward measurable improvements in visibility,
+              compliance and financial performance.
+            </p>
+
+            <div class="proof" id="proof">
+              <div class="proof__card reveal">
+                <b>30+</b>
+                <span
+                  >clients identify and structure supplier risk across 20+
+                  sub-dimensions <strong>within the first 90 days</strong></span
+                >
+              </div>
+              <div class="proof__card reveal">
+                <b>75%</b>
+                <span
+                  >clients achieved their first CSRD disclosure requirements
+                  within <strong>3 months of deployment</strong></span
+                >
+              </div>
+              <div class="proof__card reveal">
+                <b>2-3%</b>
+                <span
+                  >clients achieve a 2-3%
+                  <strong>reduction in cost of capital</strong> through
+                  proactive risk mitigation and continuous monitoring</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Four steps on one rail. On desktop each is a numbered square
+               that expands into a card when it becomes the active step; below
+               that breakpoint they are simply four stacked cards. -->
+          <ol class="rail" id="contact">
+            <li class="step is-open" data-step>
+              <span class="step__no">01</span>
+              <div class="step__body">
+                <div class="step__inner">
+                  <b class="step__title">Map your risk landscape.</b>
+                  <p class="step__text">
+                    We aggregate data across your company, suppliers, and
+                    ecosystem — integrating ESG disclosures, operational data,
+                    regulatory exposure, and supply chain dependencies into a
+                    single, structured view.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="step" data-step>
+              <span class="step__no">02</span>
+              <div class="step__body">
+                <div class="step__inner">
+                  <b class="step__title">Quantify the impact.</b>
+                  <p class="step__text">
+                    We translate risk signals into financial terms: cost of
+                    capital implications, financing risk, valuation exposure.
+                    Risk becomes a number your CFO can use and your board can
+                    act on.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="step" data-step>
+              <span class="step__no">03</span>
+              <div class="step__body">
+                <div class="step__inner">
+                  <b class="step__title">Monitor how risk evolves.</b>
+                  <p class="step__text">
+                    Our AI continuously tracks changes (supplier events,
+                    regulatory updates, climate signals, market shifts) and
+                    updates your risk profile without manual refresh cycles.
+                    Your exposure picture is always current.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="step" data-step>
+              <span class="step__no">04</span>
+              <div class="step__body">
+                <div class="step__inner">
+                  <b class="step__title">Equip leadership with intelligence.</b>
+                  <p class="step__text">
+                    Reports, alerts, and intelligence outputs for finance, risk,
+                    and executives, audit-ready for CSRD, ISSB, and EU Taxonomy.
+                    Not raw data or dashboards. Ready for filings, board packs,
+                    and investor conversations.
+                  </p>
+                </div>
+              </div>
+            </li>
+          </ol>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>

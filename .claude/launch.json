@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "landing",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["serve.py", "8125"],
+      "url": "http://localhost:8125",
+      "port": 8125
+    }
+  ]
+}
