@@ -9,13 +9,36 @@
       content="C-MORE is an AI-powered risk intelligence platform that turns ESG exposure, operational dependencies and supply chain vulnerabilities into a continuously updated risk map."
     />
     <meta name="theme-color" content="#141A32" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- The .motif mark from the hero, inline: an icon at no request cost,
+         and declaring one stops every browser asking for /favicon.ico. -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Crect width='8' height='8' fill='%23ffffff'/%3E%3Crect x='0' y='2' width='2' height='2' fill='%23141a32'/%3E%3Crect x='4' y='2' width='2' height='2' fill='%23c0fa00'/%3E%3Crect x='2' y='4' width='2' height='2' fill='%23909db6'/%3E%3Crect x='6' y='4' width='2' height='2' fill='%23141a32'/%3E%3C/svg%3E" />
+    <!-- Fonts are self-hosted (see assets/css/styles.css). Preloaded here so
+         they are in flight with the stylesheet rather than discovered after
+         it parses — that is what removes the flash of fallback text. -->
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900&amp;family=Kode+Mono:wght@400;500;600;700&amp;display=swap"
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="assets/fonts/figtree-latin.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="assets/fonts/kodemono-latin.woff2"
+      crossorigin
     />
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <!-- The hero art is the largest thing on the page and the first thing
+         seen; without this it cannot start until the CSS has parsed. -->
+    <link
+      rel="preload"
+      as="image"
+      href="assets/images/alma-composicao.webp"
+      imagesrcset="assets/images/alma-composicao.webp 1x, assets/images/alma-composicao@2x.webp 2x"
+      fetchpriority="high"
+    />
   </head>
   <body>
     <!-- The nav surface doubles as the trial panel: pressing the CTA grows the
@@ -27,10 +50,11 @@
         <a href="#top" aria-label="C-MORE home">
           <img
             class="nav__logo"
-            src="assets/images/fig-logo.png"
+            src="assets/images/fig-logo.webp"
             alt="c·more"
             width="112"
-            height="30"
+            height="21"
+            decoding="async"
           />
         </a>
 
@@ -344,10 +368,12 @@
 
               <div class="flow__core">
                 <img
-                  src="assets/images/fig-logo-negative.png"
+                  src="assets/images/fig-logo-negative.webp"
                   alt="c·more"
                   width="166"
-                  height="45"
+                  height="31"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 

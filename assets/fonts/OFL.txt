@@ -1,0 +1,11 @@
+Figtree — Copyright (c) Erik Kennedy, SIL Open Font License 1.1
+  https://github.com/erikdkennedy/figtree
+Kode Mono — Copyright (c) Isaac Mulwa Kioko, SIL Open Font License 1.1
+  https://github.com/isaackioko/Kode-Mono
+
+Both families are licensed under the SIL Open Font License, Version 1.1,
+which permits redistribution and self-hosting. Full licence text:
+  https://openfontlicense.org/open-font-license-official-text/
+
+Files here are the Google Fonts variable woff2 builds (Figtree v9,
+Kode Mono v4), split into latin / latin-ext subsets by unicode-range.
